@@ -1,0 +1,45 @@
+version: "3"
+services:
+  db:
+    container_name: ze_middleware_db
+    image: mysql:5.7
+    env_file: "docker/database.env"
+    network_mode: "bridge"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  php:
+    container_name: ze_middleware_php
+    build: "./docker/php"
+    network_mode: "bridge"
+    working_dir: /var/www/html/src
+    links:
+      - db
+      - mailserver
+    volumes:
+      - ./docker/config/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./docker/config/php/symfony.ini:/usr/local/etc/php/conf.d/symfony.ini
+      - .:/var/www/html
+
+  webserver:
+    container_name: ze_middleware_nginx
+    image: nginx:stable-alpine
+    environment:
+      VIRTUAL_HOST: ze-middleware.local
+    network_mode: "bridge"
+    links:
+      - php
+    volumes:
+      - ./docker/config/webserver/sites-enabled:/etc/nginx/conf.d
+      - ./:/var/www/html
+
+  mailserver:
+    container_name: ze_middleware_mailhog
+    image: mailhog/mailhog
+    network_mode: "bridge"
+    env_file: "docker/mailserver.env"
+    environment:
+      VIRTUAL_HOST: mail.ze_middleware.local
+
+volumes:
+  mysqldata:

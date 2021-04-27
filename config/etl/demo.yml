@@ -1,0 +1,9 @@
+chain:
+  "Dummy Step":
+    operation: rule-engine-transformer
+    options:
+      add: true
+      columns:
+        test:
+          rules:
+            - get : {field: [0, 'uid']}

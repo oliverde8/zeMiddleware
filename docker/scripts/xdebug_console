@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+os=$(uname -a)
+remoteHost="127.0.0.1"
+if [[ ${os} == *"Darwin"* || ${os} == *"Microsoft"* ]]; then
+    remoteHost="host.docker.internal"
+fi
+
+xdebugParam="-dxdebug.remote_enable=1 -dxdebug.remote_autostart=1 -dxdebug.idekey=PHPSTORM -dxdebug.remote_host=${remoteHost}"
+
+docker-compose exec php php ${xdebugParam} bin/console $*
