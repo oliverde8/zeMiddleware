@@ -16,4 +16,5 @@ return [
     Oliverde8\PhpEtlBundle\Oliverde8PhpEtlBundle::class => ['all' => true],
     oliverde8\ComfyBundle\oliverde8ComfyBundle::class => ['all' => true],
     oliverde8\ComfyEasyAdminBundle\oliverde8ComfyEasyAdminBundle::class => ['all' => true],
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
 ];
